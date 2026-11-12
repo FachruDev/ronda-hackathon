@@ -463,8 +463,8 @@
       "ending": {
         "type": "safe",
         "summary": {
-          "id": "Rumah Selamat. Hantunya terusir sebelum sempat menyebar. Senin pagi, toko buka seperti biasa, dengan backup offline, MFA, dan akun yang rapi. Malam berikutnya, toko jauh lebih siap.",
-          "en": "The House Is Safe. The ghost was driven out before it could spread. On Monday morning the store opens as usual, now with an offline backup, MFA, and tidy accounts. The next night, it is far better prepared."
+          "id": "Hantunya terusir sebelum sempat menyebar. Senin pagi, toko buka seperti biasa, dengan backup offline, MFA, dan akun yang rapi. Malam berikutnya, toko jauh lebih siap.",
+          "en": "The ghost was driven out before it could spread. On Monday morning the store opens as usual, now with an offline backup, MFA, and tidy accounts. The next night, it is far better prepared."
         }
       }
     },
@@ -473,8 +473,8 @@
       "ending": {
         "type": "partial",
         "summary": {
-          "id": "Setengah Selamat. Toko kembali beroperasi, tapi ada yang hilang: data beberapa hari, uang, atau kepercayaan pelanggan. Beberapa pintu juga masih belum terkunci. Hantunya pergi, tapi bisa kembali.",
-          "en": "Half Saved. The store is running again, but something was lost: days of data, money, or customers' trust. Some doors are still unlocked. The ghost has left, but it could come back."
+          "id": "Toko kembali beroperasi, tapi ada yang hilang: data beberapa hari, uang, atau kepercayaan pelanggan. Beberapa pintu juga masih belum terkunci. Hantunya pergi, tapi bisa kembali.",
+          "en": "The store is running again, but something was lost: days of data, money, or customers' trust. Some doors are still unlocked. The ghost has left, but it could come back."
         }
       }
     },
@@ -483,8 +483,8 @@
       "ending": {
         "type": "haunted",
         "summary": {
-          "id": "Rumah Dikuasai Hantu. File tetap terkunci, backup terakhir tercemar, dan penyerang masih punya jalan masuk. Kejadian seperti ini bisa menutup usaha kecil untuk selamanya. Coba lagi, dan temukan keputusan yang menyelamatkan rumahmu.",
-          "en": "The House Is Haunted. The files stay locked, the last backup is tainted, and the attacker still has a way in. Incidents like this can close a small business for good. Try again and find the decisions that save the house."
+          "id": "File tetap terkunci, backup terakhir tercemar, dan penyerang masih punya jalan masuk. Kejadian seperti ini bisa menutup usaha kecil untuk selamanya. Coba lagi, dan temukan keputusan yang menyelamatkan rumahmu.",
+          "en": "The files stay locked, the last backup is tainted, and the attacker still has a way in. Incidents like this can close a small business for good. Try again and find the decisions that save the house."
         }
       }
     }

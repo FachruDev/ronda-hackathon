@@ -150,7 +150,7 @@ Tasks are ordered by dependency. Each task is independently executable. The chec
 
 ## Phase 5 — App UI
 
-- [ ] **TASK-13** Bootstrap app entry point and language store
+- [x] **TASK-13** Bootstrap app entry point and language store
 
   In `apps/ransomware-house/src/main.ts`:
   - Load scenario JSON and control catalog JSON (static imports, bundled by Vite).
@@ -161,7 +161,7 @@ Tasks are ordered by dependency. Each task is independently executable. The chec
 
   Acceptance: `npm run dev` opens to a page with no console errors; the scenario loads silently.
 
-- [ ] **TASK-14** Implement TitleScreen
+- [x] **TASK-14** Implement TitleScreen
 
   In `apps/ransomware-house/src/ui/TitleScreen.ts`:
   - Export `renderTitleScreen(onStart: () => void, onToggleLang: () => void): void`.
@@ -172,7 +172,7 @@ Tasks are ordered by dependency. Each task is independently executable. The chec
 
   Acceptance: Title screen visible; language toggle switches all text; Start button calls the callback.
 
-- [ ] **TASK-15** Implement NodeScreen and FeedbackOverlay
+- [x] **TASK-15** Implement NodeScreen and FeedbackOverlay
 
   In `apps/ransomware-house/src/ui/NodeScreen.ts`:
   - Export `renderNodeScreen(session: Session, onChoice: (choiceId: string) => void): void`.
@@ -186,7 +186,7 @@ Tasks are ordered by dependency. Each task is independently executable. The chec
 
   Acceptance: Clicking a choice shows the overlay with correct feedback text; "bad" choices show the ghost class and control name; Continue advances correctly.
 
-- [ ] **TASK-16** Implement EndingScreen
+- [x] **TASK-16** Implement EndingScreen
 
   In `apps/ransomware-house/src/ui/EndingScreen.ts`:
   - Export `renderEndingScreen(session: Session, report: Report, catalog: ControlCatalog, onRestart: () => void): void`.
@@ -197,7 +197,7 @@ Tasks are ordered by dependency. Each task is independently executable. The chec
 
   Acceptance: All three ending types render with correct visual treatment; print button triggers print dialog; checklist items match session history.
 
-- [ ] **TASK-17** Create UI strings map (`ui-strings.ts`)
+- [x] **TASK-17** Create UI strings map (`ui-strings.ts`)
 
   In `apps/ransomware-house/src/ui-strings.ts`:
   - Define the `UIKey` type and `UI_STRINGS` map as specified in the design.
@@ -210,7 +210,7 @@ Tasks are ordered by dependency. Each task is independently executable. The chec
 
 ## Phase 6 — Styling and Accessibility
 
-- [ ] **TASK-18** Implement base CSS
+- [x] **TASK-18** Implement base CSS
 
   In `apps/ransomware-house/src/style.css`:
   - CSS custom properties: `--color-bg`, `--color-surface`, `--color-text`, `--color-accent`, `--color-danger`, `--color-muted`.
@@ -221,7 +221,7 @@ Tasks are ordered by dependency. Each task is independently executable. The chec
 
   Acceptance: App looks intentional and readable on a 375 px viewport and on a 1280 px viewport.
 
-- [ ] **TASK-19** Implement ghost effect and print CSS
+- [x] **TASK-19** Implement ghost effect and print CSS
 
   In the same `style.css`:
   - `.ghost-effect` keyframe animation (flicker, slight desaturation, red tint).
@@ -230,7 +230,7 @@ Tasks are ordered by dependency. Each task is independently executable. The chec
 
   Acceptance: Bad choice triggers visible ghost animation in browser; print preview shows only the checklist.
 
-- [ ] **TASK-20** Accessibility pass
+- [x] **TASK-20** Accessibility pass
 
   Review and fix across all screen components:
   - All interactive elements reachable by Tab.

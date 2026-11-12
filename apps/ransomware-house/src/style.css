@@ -1,0 +1,702 @@
+/*
+ * Ronda: a night-watch post. Deep indigo night, one warm oil-lamp light.
+ * The only animated moment is the ghost that answers a bad decision.
+ */
+
+:root {
+  color-scheme: dark;
+
+  --color-bg: #161a33;        /* night */
+  --color-surface: #222849;   /* the walls of the pos ronda */
+  --color-surface-2: #2c335c;
+  --color-text: #f1e9d6;      /* lamplit paper */
+  --color-muted: #b3b8d6;
+  --color-accent: #f3b957;    /* oil lamp */
+  --color-danger: #ef7a66;    /* rust */
+  --color-ghost: #a4e8d3;     /* the ghost's pale glow */
+  --color-line: #3b4373;
+
+  --font-display: 'Young Serif', Georgia, serif;
+  --font-body: 'Atkinson Hyperlegible', system-ui, sans-serif;
+
+  --step--1: 0.9rem;
+  --step-0: 1.125rem;
+  --step-1: 1.35rem;
+  --step-2: 1.7rem;
+  --step-3: clamp(2.1rem, 7vw, 3.1rem);
+
+  --radius: 12px;
+  --measure: 36rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--color-bg);
+  /* The lamp: a pool of warm light at the top of the page. */
+  background-image: radial-gradient(ellipse 70% 42% at 50% -6%, rgb(243 185 87 / 0.2), transparent 70%);
+  background-repeat: no-repeat;
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  transition: background-image 0.4s;
+}
+
+body[data-ghost='true'] {
+  background-image: radial-gradient(ellipse 70% 42% at 50% -6%, rgb(164 232 211 / 0.12), transparent 70%);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.15;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* Headings receive focus on screen change so screen readers announce them; no ring needed. */
+[tabindex='-1']:focus {
+  outline: none;
+}
+
+#app {
+  max-width: calc(var(--measure) + 2rem);
+  margin: 0 auto;
+  padding: 0 1rem 4rem;
+}
+
+/* ---------- Top bar ---------- */
+
+.topbar {
+  padding-top: 1rem;
+}
+
+.topbar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.topbar__brand {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  color: var(--color-accent);
+}
+
+.topbar__title {
+  margin-top: 0.25rem;
+  font-family: var(--font-body);
+  font-size: var(--step--1);
+  font-weight: 400;
+  color: var(--color-muted);
+}
+
+.lang {
+  display: inline-flex;
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  padding: 3px;
+}
+
+.lang__option {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 0.75rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-muted);
+  font: inherit;
+  font-size: var(--step--1);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.lang__option[aria-pressed='true'] {
+  background: var(--color-surface-2);
+  color: var(--color-text);
+}
+
+/* ---------- Buttons ---------- */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0.7rem 1.4rem;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.button--primary {
+  background: var(--color-accent);
+  color: #1a1a2e;
+}
+
+.button--primary:hover {
+  background: #f7cb7c;
+}
+
+.button--ghost {
+  background: transparent;
+  border-color: var(--color-line);
+  color: var(--color-text);
+}
+
+.button--ghost:hover {
+  border-color: var(--color-muted);
+}
+
+/* ---------- The house ---------- */
+
+.house {
+  display: block;
+  overflow: visible;
+}
+
+.house__roof {
+  fill: #2a2f55;
+}
+
+.house__wall {
+  fill: #1f2445;
+  stroke: var(--color-line);
+  stroke-width: 1;
+}
+
+.house__door {
+  fill: #141832;
+}
+
+.house__mullion {
+  stroke: #141832;
+  stroke-width: 2;
+  fill: none;
+}
+
+.house__window rect {
+  fill: #12152b;
+  stroke: var(--color-line);
+}
+
+.house__window--lit rect {
+  fill: var(--color-accent);
+  stroke: var(--color-accent);
+}
+
+.house__window--current rect {
+  fill: #f7d69a;
+  stroke: var(--color-text);
+  stroke-width: 2;
+}
+
+.house__window--haunted rect {
+  fill: var(--color-ghost);
+  stroke: var(--color-ghost);
+}
+
+.house__window--lit,
+.house__window--current {
+  filter: drop-shadow(0 0 6px rgb(243 185 87 / 0.7));
+}
+
+.house__window--haunted {
+  filter: drop-shadow(0 0 8px rgb(164 232 211 / 0.8));
+}
+
+/* ---------- Screens ---------- */
+
+.screen {
+  padding-top: 1.5rem;
+}
+
+/* Title */
+
+.screen--title {
+  display: grid;
+  gap: 1.25rem;
+  justify-items: start;
+  padding-top: 2.5rem;
+}
+
+.house--hero {
+  width: min(70%, 15rem);
+  margin-bottom: 0.5rem;
+}
+
+.title__heading {
+  font-size: var(--step-3);
+  color: var(--color-text);
+  max-width: 12ch;
+}
+
+.title__problem {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  line-height: 1.4;
+  color: var(--color-accent);
+  max-width: 28ch;
+}
+
+.title__intro {
+  color: var(--color-muted);
+  max-width: 34ch;
+}
+
+.title__note {
+  font-size: var(--step--1);
+  color: var(--color-muted);
+}
+
+/* Room */
+
+.room {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.house--map {
+  width: 5.5rem;
+  flex: none;
+}
+
+.room__progress {
+  font-size: var(--step--1);
+  color: var(--color-muted);
+}
+
+.room__name {
+  font-size: var(--step-2);
+  color: var(--color-accent);
+}
+
+.situation {
+  padding: 1.5rem 0;
+}
+
+.situation__text {
+  font-size: var(--step-0);
+  line-height: 1.7;
+}
+
+.choices__list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.choice {
+  display: block;
+  width: 100%;
+  min-height: 48px;
+  padding: 0.9rem 1.1rem;
+  border: 1px solid var(--color-line);
+  border-left: 4px solid var(--color-line);
+  border-radius: 6px var(--radius) var(--radius) 6px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  line-height: 1.45;
+  text-align: left;
+  cursor: pointer;
+}
+
+.choice:hover {
+  border-left-color: var(--color-accent);
+  background: var(--color-surface-2);
+}
+
+/* ---------- Feedback dialog ---------- */
+
+.feedback {
+  width: min(32rem, calc(100vw - 2rem));
+  max-height: calc(100vh - 2rem);
+  padding: 0;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  color: var(--color-text);
+  overflow: auto;
+}
+
+.feedback::backdrop {
+  background: rgb(10 12 26 / 0.75);
+}
+
+.feedback__body {
+  position: relative;
+  display: grid;
+  gap: 1rem;
+  padding: 1.5rem;
+}
+
+.feedback__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.feedback__verdict {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--step-1);
+}
+
+.feedback--good .feedback__verdict {
+  color: var(--color-accent);
+}
+
+.feedback--neutral .feedback__verdict {
+  color: var(--color-muted);
+}
+
+.feedback--bad .feedback__verdict {
+  color: var(--color-ghost);
+}
+
+.feedback__delta {
+  font-size: var(--step--1);
+  color: var(--color-muted);
+}
+
+.feedback__controls {
+  padding: 0.9rem 1rem;
+  border-left: 4px solid var(--color-danger);
+  background: rgb(239 122 102 / 0.1);
+  border-radius: 0 8px 8px 0;
+}
+
+.feedback__controls-label {
+  font-size: var(--step--1);
+  color: var(--color-muted);
+}
+
+.feedback__controls strong {
+  color: var(--color-text);
+}
+
+.feedback .button {
+  justify-self: start;
+}
+
+/* The ghost: rises behind the text and fades to a faint presence. */
+
+.ghost {
+  position: absolute;
+  right: 1.25rem;
+  top: 1.1rem;
+  width: 3.25rem;
+  pointer-events: none;
+}
+
+.ghost__body {
+  fill: var(--color-ghost);
+  opacity: 0.9;
+}
+
+.ghost__eye {
+  fill: var(--color-bg);
+}
+
+/* Keep the verdict line clear of the ghost; the text below runs full width. */
+.feedback--bad .feedback__meta {
+  min-height: 3.6rem;
+  padding-right: 4.25rem;
+  align-content: start;
+}
+
+.ghost-effect {
+  border-color: var(--color-ghost);
+  animation: flicker 1.1s steps(1, end) 1;
+}
+
+.ghost-effect .ghost {
+  animation: rise 1.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.85);
+  }
+  60% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.85;
+    transform: none;
+  }
+}
+
+@keyframes flicker {
+  0%,
+  100% {
+    filter: none;
+  }
+  10% {
+    filter: saturate(0.3) brightness(0.7);
+  }
+  20% {
+    filter: none;
+  }
+  32% {
+    filter: saturate(0.2) brightness(0.55) sepia(0.4) hue-rotate(-30deg);
+  }
+  44% {
+    filter: none;
+  }
+  60% {
+    filter: saturate(0.4) brightness(0.8);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ghost-effect,
+  .ghost-effect .ghost {
+    animation: none;
+  }
+
+  .ghost-effect {
+    border: 2px solid var(--color-danger);
+  }
+
+  body {
+    transition: none;
+  }
+}
+
+/* ---------- Ending ---------- */
+
+.screen--ending {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.ending__hero {
+  display: flex;
+  justify-content: flex-start;
+  padding-top: 0.5rem;
+}
+
+.house--ending {
+  width: min(60%, 13rem);
+}
+
+.house--haunted .house__roof,
+.house--haunted .house__wall {
+  fill: #1d2238;
+}
+
+.ending__title {
+  font-size: var(--step-3);
+}
+
+[data-ending-type='safe'] .ending__title {
+  color: var(--color-accent);
+}
+
+[data-ending-type='partial'] .ending__title {
+  color: #f0d29a;
+}
+
+[data-ending-type='haunted'] .ending__title {
+  color: var(--color-ghost);
+}
+
+.ending__summary {
+  max-width: 34ch;
+  font-size: var(--step-1);
+  font-family: var(--font-display);
+  line-height: 1.45;
+}
+
+.ending__score {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  border-top: 1px solid var(--color-line);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.ending__score-label {
+  color: var(--color-muted);
+}
+
+.ending__score-value {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--step-2);
+}
+
+.missed {
+  display: grid;
+  gap: 1rem;
+}
+
+.missed h3 {
+  font-size: var(--step-1);
+}
+
+.missed__list {
+  display: grid;
+  gap: 1rem;
+}
+
+.missed__item {
+  padding-left: 1rem;
+  border-left: 3px solid var(--color-ghost);
+}
+
+.missed__name {
+  display: block;
+}
+
+.missed__description {
+  color: var(--color-muted);
+  font-size: var(--step--1);
+  line-height: 1.6;
+  margin-top: 0.25rem;
+}
+
+.missed__none {
+  color: var(--color-muted);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding-top: 0.5rem;
+}
+
+.checklist {
+  display: none;
+}
+
+/* ---------- Error ---------- */
+
+.screen--error {
+  display: grid;
+  gap: 1rem;
+}
+
+.screen--error code {
+  color: var(--color-accent);
+}
+
+/* ---------- Print: only the checklist ---------- */
+
+@media print {
+  @page {
+    margin: 16mm;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+    font-size: 11pt;
+  }
+
+  #app {
+    max-width: none;
+    padding: 0;
+  }
+
+  .topbar,
+  nav,
+  button,
+  .lang,
+  .screen--ending > :not(.checklist),
+  dialog {
+    display: none !important;
+  }
+
+  .screen {
+    padding: 0;
+  }
+
+  .checklist {
+    display: block;
+  }
+
+  .checklist h2 {
+    font-size: 18pt;
+    margin-bottom: 4pt;
+  }
+
+  .checklist > p {
+    margin-bottom: 12pt;
+  }
+
+  .checklist__group {
+    margin-top: 12pt;
+  }
+
+  .checklist__group h3 {
+    font-size: 12pt;
+    margin-bottom: 6pt;
+  }
+
+  .checklist__items li {
+    position: relative;
+    padding: 6pt 0 6pt 22pt;
+    border-bottom: 0.5pt solid #999;
+    break-inside: avoid;
+  }
+
+  .checklist__items li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8pt;
+    width: 11pt;
+    height: 11pt;
+    border: 1pt solid #000;
+  }
+
+  .checklist__items strong {
+    display: block;
+  }
+
+  .checklist__items span {
+    display: block;
+    color: #333;
+  }
+}
