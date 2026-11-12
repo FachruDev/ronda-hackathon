@@ -1,0 +1,17 @@
+{
+  "name": "ronda",
+  "private": true,
+  "description": "Night-watch drills for small teams with no security team.",
+  "license": "MIT",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=@ronda/ransomware-house",
+    "build": "npm run build --workspace=@ronda/ransomware-house",
+    "test": "npm run test --workspace=@ronda/engine",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "validate-scenario": "npm run validate-scenario --workspace=@ronda/engine"
+  }
+}
