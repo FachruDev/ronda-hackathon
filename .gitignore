@@ -1,0 +1,15 @@
+# Dependencies and build output
+node_modules/
+dist/
+coverage/
+*.log
+
+# Local environment
+.env
+.env.*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+
+# NOTE: never ignore .kiro/ — it is required for Kiroween judging
