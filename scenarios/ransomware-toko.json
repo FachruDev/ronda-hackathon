@@ -1,0 +1,492 @@
+{
+  "id": "ransomware-toko",
+  "title": { "id": "Malam di Toko Sumber Rejeki", "en": "A Night at Sumber Rejeki Store" },
+  "start": "detect-1",
+  "nodes": {
+    "detect-1": {
+      "room": "detect",
+      "text": {
+        "id": "Jumat, pukul 21.00. Toko bangunan Sumber Rejeki sudah tutup. Mbak Dewi, admin toko, masih lembur di PC admin. Tiba-tiba semua file Excel stok berganti nama jadi .locked, dan di desktop muncul file teks: \"Data Anda kami kunci. Bayar dalam 48 jam.\" Pak Hendra, pemilik toko, menelepon dan bertanya, \"Terus kita harus apa?\"",
+        "en": "Friday, 9 p.m. Sumber Rejeki hardware store has closed for the night. Dewi, the store admin, is working late on the admin PC. Suddenly every stock spreadsheet is renamed to .locked, and a text file appears on the desktop: \"We have locked your data. Pay within 48 hours.\" Mr. Hendra, the owner, calls and asks, \"So what do we do?\""
+      },
+      "choices": [
+        {
+          "id": "unplug",
+          "label": {
+            "id": "Cabut kabel LAN dan matikan Wi-Fi PC admin, tapi biarkan PC tetap menyala",
+            "en": "Unplug the admin PC's network cable and turn off its Wi-Fi, but leave it powered on"
+          },
+          "next": "isolate-nas",
+          "quality": "good",
+          "score": 10,
+          "controls": [],
+          "feedback": {
+            "id": "Tepat. PC yang terputus dari jaringan tidak bisa menulari PC lain. Karena tetap menyala, jejak serangan juga masih bisa diperiksa nanti.",
+            "en": "Right call. A PC cut off from the network cannot infect the others. Because it stays on, the attack's traces can still be examined later."
+          }
+        },
+        {
+          "id": "pay",
+          "label": {
+            "id": "Transfer tebusannya sekarang supaya urusan cepat selesai",
+            "en": "Pay the ransom now so this is over quickly"
+          },
+          "next": "isolate-nas",
+          "quality": "bad",
+          "score": -15,
+          "controls": ["offline-backup", "vendor-contact"],
+          "feedback": {
+            "id": "Uang sudah terkirim, tapi kunci pembuka tak kunjung datang. Penyerang juga masih ada di jaringan. Bayar tebusan tidak menjamin apa pun. Backup yang aman dan kontak IT yang siap dihubungi membuat pilihan ini tidak perlu.",
+            "en": "The money is gone, and no unlock key arrives. The attacker is still inside the network. Paying guarantees nothing. A safe backup and an IT contact ready to call would make this choice unnecessary."
+          }
+        },
+        {
+          "id": "wait-monday",
+          "label": {
+            "id": "Matikan monitor dan pulang, nanti Senin saja diurus",
+            "en": "Switch off the monitor, go home, and deal with it on Monday"
+          },
+          "next": "isolate-spread",
+          "quality": "bad",
+          "score": -15,
+          "controls": ["network-isolation", "incident-log"],
+          "feedback": {
+            "id": "Sepanjang malam, PC itu tetap tersambung ke jaringan toko. Ransomware merayap dari satu komputer ke komputer lain tanpa ada yang tahu kapan semuanya dimulai.",
+            "en": "All night, the PC stays connected to the store network. The ransomware creeps from one computer to the next, and nobody knows when it all began."
+          }
+        },
+        {
+          "id": "restart-all",
+          "label": {
+            "id": "Restart semua PC di toko, siapa tahu masalahnya hilang",
+            "en": "Restart every PC in the store and hope it goes away"
+          },
+          "next": "isolate-spread",
+          "quality": "bad",
+          "score": -10,
+          "controls": ["network-isolation", "evidence-preservation"],
+          "feedback": {
+            "id": "Masalahnya tidak hilang. Semua PC menyala lagi dalam keadaan tersambung, dan jejak yang tadi ada di memori PC admin ikut lenyap.",
+            "en": "It does not go away. Every PC comes back online, still connected, and the traces in the admin PC's memory are wiped."
+          }
+        }
+      ]
+    },
+
+    "isolate-nas": {
+      "room": "isolate",
+      "text": {
+        "id": "PC admin sudah terputus. Lalu Mbak Dewi ingat: setiap malam, semua data dibackup ke NAS di gudang, dan NAS itu selalu tersambung ke jaringan yang sama. Lampunya masih berkedip.",
+        "en": "The admin PC is offline. Then Dewi remembers: every night, all data is backed up to the NAS in the storeroom, and that NAS is always connected to the same network. Its light is still blinking."
+      },
+      "choices": [
+        {
+          "id": "disconnect-nas",
+          "label": {
+            "id": "Cabut kabel jaringan NAS sekarang, jangan dibuka dulu",
+            "en": "Unplug the NAS's network cable now, and do not open it yet"
+          },
+          "next": "isolate-accounts",
+          "quality": "good",
+          "score": 10,
+          "controls": [],
+          "feedback": {
+            "id": "Backup selamat. Sekarang NAS sudah jadi backup offline: tidak bisa dijangkau penyerang, dan siap dipakai untuk pemulihan.",
+            "en": "The backup is safe. The NAS is now an offline backup: out of the attacker's reach and ready for recovery."
+          }
+        },
+        {
+          "id": "power-off-nas",
+          "label": {
+            "id": "Matikan NAS lewat tombol power-nya",
+            "en": "Switch the NAS off with its power button"
+          },
+          "next": "isolate-accounts",
+          "quality": "neutral",
+          "score": 3,
+          "controls": [],
+          "feedback": {
+            "id": "NAS berhenti dan tidak bisa dijangkau lagi. Cukup aman, tapi lain kali cabut saja kabel jaringannya. NAS yang dimatikan mendadak kadang butuh waktu lama untuk menyala kembali.",
+            "en": "The NAS stops and is out of reach. Safe enough, but next time just pull the network cable. A NAS that loses power suddenly can take a long time to come back."
+          }
+        },
+        {
+          "id": "open-nas",
+          "label": {
+            "id": "Buka folder NAS dari PC kasir untuk mengecek apakah backup-nya aman",
+            "en": "Open the NAS folder from a cashier PC to check whether the backup is fine"
+          },
+          "next": "isolate-spread",
+          "quality": "bad",
+          "score": -10,
+          "controls": ["offline-backup", "network-isolation"],
+          "feedback": {
+            "id": "Saat folder dibuka, satu per satu file backup ikut berubah jadi .locked. Backup yang selalu tersambung ternyata hanya pintu lain bagi hantu yang sama.",
+            "en": "As the folder opens, the backup files turn into .locked one by one. A backup that is always connected is just another door for the same ghost."
+          }
+        }
+      ]
+    },
+
+    "isolate-accounts": {
+      "room": "isolate",
+      "text": {
+        "id": "Pak Hendra datang ke toko. Ternyata password akun admin PC, email toko, dan Wi-Fi semuanya sama, dan sudah dipakai sejak toko buka sepuluh tahun lalu. Semua akun itu harus segera diamankan.",
+        "en": "Mr. Hendra arrives at the store. It turns out the admin PC account, the store email, and the Wi-Fi all share one password, unchanged since the store opened ten years ago. All of them need securing, fast."
+      },
+      "choices": [
+        {
+          "id": "clean-device",
+          "label": {
+            "id": "Ganti semua password lewat HP Pak Hendra, satu per satu dan semuanya berbeda",
+            "en": "Change every password from Mr. Hendra's phone, one by one, each one different"
+          },
+          "next": "communicate-clean",
+          "quality": "good",
+          "score": 10,
+          "controls": [],
+          "feedback": {
+            "id": "Bagus. HP itu tidak terinfeksi, jadi password baru tidak terbaca oleh penyerang. Karena semuanya berbeda, bocornya satu password tidak membuka pintu yang lain.",
+            "en": "Good. The phone is not infected, so the attacker cannot read the new passwords. Because each is different, one leak no longer opens every door."
+          }
+        },
+        {
+          "id": "infected-pc",
+          "label": {
+            "id": "Ganti password dari PC admin, toh datanya ada di sana",
+            "en": "Change the passwords from the admin PC, since everything is on it anyway"
+          },
+          "next": "communicate-clean",
+          "quality": "bad",
+          "score": -10,
+          "controls": ["clean-device-password-change"],
+          "feedback": {
+            "id": "Setiap huruf yang diketik di PC itu bisa direkam. Password baru langsung diketahui penyerang sebelum sempat dipakai.",
+            "en": "Every key typed on that PC can be recorded. The attacker learns the new passwords before you even use them."
+          }
+        },
+        {
+          "id": "later",
+          "label": {
+            "id": "Urusan password nanti saja, yang penting toko bisa buka besok",
+            "en": "Leave the passwords for later; what matters is opening tomorrow"
+          },
+          "next": "communicate-clean",
+          "quality": "bad",
+          "score": -10,
+          "controls": ["clean-device-password-change", "mfa", "account-audit"],
+          "feedback": {
+            "id": "Password lama masih berlaku. Malam itu ada yang masuk ke email toko dan mulai membaca invoice pelanggan.",
+            "en": "The old password still works. That night, someone signs in to the store email and starts reading customer invoices."
+          }
+        }
+      ]
+    },
+
+    "isolate-spread": {
+      "room": "isolate",
+      "text": {
+        "id": "Sabtu pagi. Ketiga PC kasir juga terkunci, dan di NAS backup muncul file .locked. Pegawai sudah antre di depan pintu, menunggu toko dibuka.",
+        "en": "Saturday morning. All three cashier PCs are locked too, and .locked files have appeared on the NAS backup. Staff are lining up at the door, waiting to open the store."
+      },
+      "choices": [
+        {
+          "id": "cut-everything",
+          "label": {
+            "id": "Putuskan semua PC dan NAS dari jaringan, lalu buka toko dengan nota tulis tangan",
+            "en": "Disconnect every PC and the NAS from the network, and open with handwritten receipts"
+          },
+          "next": "communicate-dark",
+          "quality": "good",
+          "score": 5,
+          "controls": [],
+          "feedback": {
+            "id": "Penyebaran berhenti di sini. Kerusakannya sudah besar, tapi setidaknya tidak bertambah, dan toko tetap bisa melayani pembeli.",
+            "en": "The spread stops here. The damage is already serious, but at least it will not grow, and the store can still serve customers."
+          }
+        },
+        {
+          "id": "keep-working",
+          "label": {
+            "id": "Tetap pakai PC kasir yang masih bisa jalan",
+            "en": "Keep using whichever cashier PCs still work"
+          },
+          "next": "communicate-dark",
+          "quality": "bad",
+          "score": -10,
+          "controls": ["network-isolation"],
+          "feedback": {
+            "id": "Menjelang siang, PC kasir terakhir ikut terkunci di tengah transaksi. Pembeli menunggu, dan data penjualan pagi itu hilang.",
+            "en": "By noon, the last cashier PC locks up in the middle of a sale. Customers wait, and the morning's sales records are gone."
+          }
+        },
+        {
+          "id": "passwords-on-pc",
+          "label": {
+            "id": "Ganti password Wi-Fi dari PC kasir yang masih menyala",
+            "en": "Change the Wi-Fi password from a cashier PC that is still running"
+          },
+          "next": "communicate-dark",
+          "quality": "bad",
+          "score": -5,
+          "controls": ["clean-device-password-change", "network-isolation"],
+          "feedback": {
+            "id": "Password baru diketik di komputer yang sudah tertular. Penyerang langsung tahu, dan PC itu masih tersambung ke jaringan.",
+            "en": "The new password is typed on a computer that is already infected. The attacker knows it at once, and the PC is still on the network."
+          }
+        }
+      ]
+    },
+
+    "communicate-clean": {
+      "room": "communicate",
+      "text": {
+        "id": "Grup WhatsApp pegawai mulai ramai: \"Toko kita kena hack?\" Di PC admin juga tersimpan data pelanggan: nama, nomor HP, dan alamat pengiriman. Pak Hendra bertanya, apa yang harus dikerjakan lebih dulu?",
+        "en": "The staff WhatsApp group is buzzing: \"Did we get hacked?\" The admin PC also holds customer data: names, phone numbers, and delivery addresses. Mr. Hendra asks what to do first."
+      },
+      "choices": [
+        {
+          "id": "log-and-evidence",
+          "label": {
+            "id": "Foto catatan tebusan, tulis kronologi kejadian, lalu hubungi teknisi IT langganan",
+            "en": "Photograph the ransom note, write down the timeline, then call the store's usual IT technician"
+          },
+          "next": "recover-clean",
+          "quality": "good",
+          "score": 10,
+          "controls": [],
+          "feedback": {
+            "id": "Dengan bukti dan kronologi di tangan, teknisi bisa langsung bekerja tanpa menebak-nebak. Ia juga bisa mencari dari mana penyerang masuk.",
+            "en": "With evidence and a timeline in hand, the technician can start right away without guessing, and can look for how the attacker got in."
+          }
+        },
+        {
+          "id": "notify-customers",
+          "label": {
+            "id": "Siapkan pesan jujur untuk pelanggan yang datanya mungkin ikut terdampak",
+            "en": "Draft an honest message for customers whose data may be affected"
+          },
+          "next": "recover-clean",
+          "quality": "good",
+          "score": 10,
+          "controls": [],
+          "feedback": {
+            "id": "Pelanggan jadi bisa waspada terhadap telepon atau pesan penipuan yang mengatasnamakan toko. Kejujuran sejak awal juga menjaga kepercayaan mereka.",
+            "en": "Customers can now watch out for scam calls or messages pretending to be the store. Being honest early also keeps their trust."
+          }
+        },
+        {
+          "id": "hush",
+          "label": {
+            "id": "Hapus catatan tebusan dan minta semua pegawai tutup mulut",
+            "en": "Delete the ransom note and tell all staff to keep quiet"
+          },
+          "next": "recover-clean",
+          "quality": "bad",
+          "score": -15,
+          "controls": ["evidence-preservation", "incident-log", "customer-notification"],
+          "feedback": {
+            "id": "Bukti hilang, dan tidak ada yang tahu persis apa yang terjadi. Seminggu kemudian, pelanggan mulai ditelepon penipu yang tahu nama dan alamat mereka.",
+            "en": "The evidence is gone, and nobody knows exactly what happened. A week later, customers start getting calls from scammers who know their names and addresses."
+          }
+        }
+      ]
+    },
+
+    "communicate-dark": {
+      "room": "communicate",
+      "text": {
+        "id": "Seorang pelanggan tetap menelepon: \"Kok sistem kasirnya mati, Pak? Data saya aman?\" Kabar burung soal toko yang kena hack mulai beredar di grup WhatsApp RT.",
+        "en": "A regular customer calls: \"Why is the till down? Is my data safe?\" Rumors that the store was hacked are spreading through the neighborhood WhatsApp group."
+      },
+      "choices": [
+        {
+          "id": "log-and-call",
+          "label": {
+            "id": "Tulis kronologi, simpan bukti, hubungi teknisi IT, dan jawab pelanggan dengan jujur",
+            "en": "Write the timeline, keep the evidence, call an IT technician, and answer the customer honestly"
+          },
+          "next": "recover-dark",
+          "quality": "good",
+          "score": 10,
+          "controls": [],
+          "feedback": {
+            "id": "Situasinya masih berat, tapi sekarang terkendali. Teknisi punya pegangan untuk bekerja, dan pelanggan tahu toko tidak menutup-nutupi.",
+            "en": "Things are still bad, but now they are under control. The technician has something to work from, and customers know the store is not hiding anything."
+          }
+        },
+        {
+          "id": "deny",
+          "label": {
+            "id": "Bilang ke pelanggan semuanya aman, cuma listrik yang bermasalah",
+            "en": "Tell customers everything is fine, it is just a power problem"
+          },
+          "next": "recover-dark",
+          "quality": "bad",
+          "score": -15,
+          "controls": ["customer-notification", "incident-log"],
+          "feedback": {
+            "id": "Kebohongan itu terbongkar tiga hari kemudian, ketika data pelanggan muncul di sebuah forum. Kepercayaan yang hilang jauh lebih sulit dipulihkan daripada file.",
+            "en": "The lie unravels three days later, when customer data shows up on a forum. Lost trust is much harder to restore than files."
+          }
+        },
+        {
+          "id": "wipe-now",
+          "label": {
+            "id": "Install ulang semua PC sekarang juga, sebelum ada yang sempat memeriksa",
+            "en": "Reinstall every PC right now, before anyone can look at them"
+          },
+          "next": "recover-dark",
+          "quality": "bad",
+          "score": -10,
+          "controls": ["evidence-preservation", "vendor-contact"],
+          "feedback": {
+            "id": "PC-nya bersih, tapi celah tempat penyerang masuk tidak pernah ketemu. Pintunya masih terbuka untuk kunjungan berikutnya.",
+            "en": "The PCs are clean, but the gap the attacker came through is never found. The door is still open for their next visit."
+          }
+        }
+      ]
+    },
+
+    "recover-clean": {
+      "room": "recover",
+      "text": {
+        "id": "Teknisi memastikan backup di NAS dari Kamis malam masih utuh. Saatnya memutuskan cara toko kembali beroperasi.",
+        "en": "The technician confirms the NAS backup from Thursday night is intact. Time to decide how the store gets back on its feet."
+      },
+      "choices": [
+        {
+          "id": "restore-properly",
+          "label": {
+            "id": "Install ulang PC, pulihkan dari backup, lalu aktifkan MFA dan buat akun terpisah untuk tiap orang",
+            "en": "Reinstall the PCs, restore from the backup, then turn on MFA and give everyone their own account"
+          },
+          "next": "end-safe",
+          "quality": "good",
+          "score": 15,
+          "controls": [],
+          "feedback": {
+            "id": "Data kembali, PC bersih, dan pintu yang dulu terbuka kini terkunci rapat.",
+            "en": "The data is back, the PCs are clean, and the door that was left open is now firmly shut."
+          }
+        },
+        {
+          "id": "restore-only",
+          "label": {
+            "id": "Pulihkan backup ke PC yang sama, urusan akun nanti saja",
+            "en": "Restore the backup onto the same PCs and sort out accounts later"
+          },
+          "next": "end-partial",
+          "quality": "bad",
+          "score": -5,
+          "controls": ["mfa", "account-audit"],
+          "feedback": {
+            "id": "Toko buka lagi Senin pagi. Tapi akun bersama dengan password lama masih ada, dan tanpa MFA, pintu yang sama masih bisa dibuka lagi.",
+            "en": "The store reopens on Monday morning. But the shared account and old password are still there, and without MFA the same door can be opened again."
+          }
+        },
+        {
+          "id": "free-decryptor",
+          "label": {
+            "id": "Coba \"alat dekripsi gratis\" yang dibagikan di sebuah grup Facebook",
+            "en": "Try a \"free decryption tool\" shared in a Facebook group"
+          },
+          "next": "end-haunted",
+          "quality": "bad",
+          "score": -15,
+          "controls": ["verified-recovery-tools"],
+          "feedback": {
+            "id": "Alat itu tidak membuka apa pun. Diam-diam, ia malah memasang malware baru, kali ini juga di laptop yang dipakai untuk menjalankannya.",
+            "en": "The tool unlocks nothing. Quietly, it installs new malware instead, this time also on the laptop used to run it."
+          }
+        }
+      ]
+    },
+
+    "recover-dark": {
+      "room": "recover",
+      "text": {
+        "id": "Backup di NAS ikut terkunci. Harapan terakhir adalah hard disk eksternal berisi backup dua bulan lalu, yang disimpan Pak Hendra di rumah dan tidak pernah dicolokkan sejak itu.",
+        "en": "The NAS backup is locked too. The last hope is an external drive with a backup from two months ago, kept at Mr. Hendra's house and never plugged in since."
+      },
+      "choices": [
+        {
+          "id": "restore-old",
+          "label": {
+            "id": "Bersama teknisi, install ulang PC, pulihkan dari hard disk lama, dan input ulang transaksi dari nota",
+            "en": "With the technician, reinstall the PCs, restore from the old drive, and re-enter sales from paper receipts"
+          },
+          "next": "end-partial",
+          "quality": "good",
+          "score": 10,
+          "controls": [],
+          "feedback": {
+            "id": "Butuh seminggu kerja keras, tapi toko kembali berjalan. Hard disk yang tidak pernah tersambung itulah yang menyelamatkan semuanya.",
+            "en": "It takes a week of hard work, but the store is running again. The drive that was never connected is what saved everything."
+          }
+        },
+        {
+          "id": "free-decryptor-dark",
+          "label": {
+            "id": "Unduh \"alat dekripsi gratis\" dari situs yang muncul di hasil pencarian",
+            "en": "Download a \"free decryption tool\" from a site in the search results"
+          },
+          "next": "end-haunted",
+          "quality": "bad",
+          "score": -15,
+          "controls": ["verified-recovery-tools"],
+          "feedback": {
+            "id": "File tetap terkunci, dan sekarang hard disk backup terakhir pun ikut tercemar karena dicolokkan ke PC yang sama.",
+            "en": "The files stay locked, and now the last backup drive is contaminated too, because it was plugged into the same PC."
+          }
+        },
+        {
+          "id": "pay-late",
+          "label": {
+            "id": "Akhirnya bayar tebusan, karena sepertinya tidak ada jalan lain",
+            "en": "Finally pay the ransom; there seems to be no other way"
+          },
+          "next": "end-haunted",
+          "quality": "bad",
+          "score": -15,
+          "controls": ["offline-backup", "vendor-contact"],
+          "feedback": {
+            "id": "Kunci yang dikirim hanya membuka sebagian file. Seminggu kemudian datang tagihan kedua dengan nominal lebih besar.",
+            "en": "The key they send unlocks only some of the files. A week later, a second demand arrives, for a bigger sum."
+          }
+        }
+      ]
+    },
+
+    "end-safe": {
+      "room": "recover",
+      "ending": {
+        "type": "safe",
+        "summary": {
+          "id": "Rumah Selamat. Hantunya terusir sebelum sempat menyebar. Senin pagi, toko buka seperti biasa, dengan backup offline, MFA, dan akun yang rapi. Malam berikutnya, toko jauh lebih siap.",
+          "en": "The House Is Safe. The ghost was driven out before it could spread. On Monday morning the store opens as usual, now with an offline backup, MFA, and tidy accounts. The next night, it is far better prepared."
+        }
+      }
+    },
+    "end-partial": {
+      "room": "recover",
+      "ending": {
+        "type": "partial",
+        "summary": {
+          "id": "Setengah Selamat. Toko kembali beroperasi, tapi ada yang hilang: data beberapa hari, uang, atau kepercayaan pelanggan. Beberapa pintu juga masih belum terkunci. Hantunya pergi, tapi bisa kembali.",
+          "en": "Half Saved. The store is running again, but something was lost: days of data, money, or customers' trust. Some doors are still unlocked. The ghost has left, but it could come back."
+        }
+      }
+    },
+    "end-haunted": {
+      "room": "recover",
+      "ending": {
+        "type": "haunted",
+        "summary": {
+          "id": "Rumah Dikuasai Hantu. File tetap terkunci, backup terakhir tercemar, dan penyerang masih punya jalan masuk. Kejadian seperti ini bisa menutup usaha kecil untuk selamanya. Coba lagi, dan temukan keputusan yang menyelamatkan rumahmu.",
+          "en": "The House Is Haunted. The files stay locked, the last backup is tainted, and the attacker still has a way in. Incidents like this can close a small business for good. Try again and find the decisions that save the house."
+        }
+      }
+    }
+  }
+}

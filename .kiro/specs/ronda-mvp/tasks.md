@@ -113,7 +113,7 @@ Tasks are ordered by dependency. Each task is independently executable. The chec
 
 ## Phase 4 — Scenario Content
 
-- [ ] **TASK-11** Create the control catalog (`scenarios/controls.json`)
+- [x] **TASK-11** Create the control catalog (`scenarios/controls.json`)
 
   Write `scenarios/controls.json` as a JSON array with ≥10 controls. Required controls (see REQ-3.2):
 
@@ -134,7 +134,7 @@ Tasks are ordered by dependency. Each task is independently executable. The chec
 
   Acceptance: a simple Node script (`node -e "require('./scenarios/controls.json')"`) parses the file; Zod control catalog schema validates it without errors.
 
-- [ ] **TASK-12** Write scenario `scenarios/ransomware-toko.json`
+- [x] **TASK-12** Write scenario `scenarios/ransomware-toko.json`
 
   Implement the full scenario following the design in `docs/MVP.md` section 3:
   - 10–14 nodes, 4 rooms (`detect`, `isolate`, `communicate`, `recover`).

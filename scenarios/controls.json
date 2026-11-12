@@ -1,0 +1,82 @@
+[
+  {
+    "id": "offline-backup",
+    "name": { "id": "Backup offline yang rutin diuji", "en": "Tested offline backup" },
+    "description": {
+      "id": "Simpan salinan data di tempat yang tidak tersambung ke jaringan, misalnya hard disk eksternal yang dicabut setelah backup. Coba pulihkan sebulan sekali supaya yakin backup-nya benar-benar bisa dipakai. Backup yang selalu tersambung bisa ikut terkunci.",
+      "en": "Keep a copy of your data somewhere that is not connected to the network, such as an external drive you unplug after each backup. Test a restore once a month so you know it actually works. A backup that is always connected can get locked too."
+    }
+  },
+  {
+    "id": "mfa",
+    "name": { "id": "Verifikasi dua langkah (MFA)", "en": "Multi-factor authentication (MFA)" },
+    "description": {
+      "id": "Aktifkan kode tambahan dari aplikasi atau SMS untuk email, perbankan, dan akun admin. Kalau password bocor, penyerang tetap tidak bisa masuk tanpa kode itu.",
+      "en": "Turn on an extra code from an app or SMS for email, banking, and admin accounts. If a password leaks, an attacker still cannot sign in without that code."
+    }
+  },
+  {
+    "id": "network-isolation",
+    "name": { "id": "Isolasi perangkat dari jaringan", "en": "Network isolation" },
+    "description": {
+      "id": "Begitu ada tanda ransomware, cabut kabel LAN dan matikan Wi-Fi perangkat itu. Jangan dimatikan atau di-restart dulu. Langkah ini mencegah penyebaran ke PC lain dan ke backup.",
+      "en": "At the first sign of ransomware, unplug the device's network cable and turn off its Wi-Fi. Do not shut it down or restart it yet. This stops the spread to other PCs and to your backup."
+    }
+  },
+  {
+    "id": "evidence-preservation",
+    "name": { "id": "Simpan bukti", "en": "Preserve evidence" },
+    "description": {
+      "id": "Foto layar catatan tebusan, catat nama file yang berubah, dan jangan hapus apa pun. Bukti ini dibutuhkan pihak IT untuk mencari celah masuknya, dan berguna kalau perlu melapor ke polisi atau asuransi.",
+      "en": "Photograph the ransom note, write down the changed file names, and delete nothing. IT needs this evidence to find how the attacker got in, and it helps if you report to the police or an insurer."
+    }
+  },
+  {
+    "id": "clean-device-password-change",
+    "name": { "id": "Ganti password dari perangkat bersih", "en": "Change passwords from a clean device" },
+    "description": {
+      "id": "Ganti password email, Wi-Fi, dan akun admin memakai HP atau laptop yang tidak terinfeksi. Mengetik password baru di PC yang terinfeksi sama saja dengan memberikannya ke penyerang.",
+      "en": "Change email, Wi-Fi, and admin passwords from a phone or laptop that is not infected. Typing a new password on an infected PC is the same as handing it to the attacker."
+    }
+  },
+  {
+    "id": "incident-log",
+    "name": { "id": "Catatan kronologi kejadian", "en": "Incident timeline log" },
+    "description": {
+      "id": "Tulis jam berapa kejadian pertama terlihat, siapa yang menemukan, dan apa saja yang sudah dilakukan. Catatan sederhana di kertas sudah cukup. Tanpa catatan ini, keputusan berikutnya diambil sambil menebak.",
+      "en": "Write down when the problem was first seen, who found it, and every step taken since. A simple note on paper is enough. Without it, every later decision is a guess."
+    }
+  },
+  {
+    "id": "vendor-contact",
+    "name": { "id": "Kontak darurat IT", "en": "Emergency IT contact" },
+    "description": {
+      "id": "Simpan nomor teknisi atau penyedia layanan IT yang bisa dihubungi di luar jam kerja, sebelum kejadian. Saat panik, mencari kontak dari nol membuang jam-jam yang paling penting.",
+      "en": "Keep the number of a technician or IT provider you can reach after hours, before anything happens. In a panic, searching for help from scratch wastes the hours that matter most."
+    }
+  },
+  {
+    "id": "customer-notification",
+    "name": { "id": "Pemberitahuan ke pelanggan", "en": "Customer notification" },
+    "description": {
+      "id": "Kalau data pribadi pelanggan mungkin ikut terdampak, beri tahu mereka dengan jujur: apa yang terjadi dan apa yang perlu mereka waspadai. UU Pelindungan Data Pribadi juga mengatur kewajiban pemberitahuan; pastikan detail dan tenggatnya dengan konsultan hukum.",
+      "en": "If customers' personal data may be affected, tell them honestly what happened and what to watch out for. Indonesia's Personal Data Protection Law also sets notification duties; confirm the details and deadlines with a legal adviser."
+    }
+  },
+  {
+    "id": "verified-recovery-tools",
+    "name": { "id": "Hanya pakai alat pemulihan terpercaya", "en": "Use only trusted recovery tools" },
+    "description": {
+      "id": "Jangan unduh \"alat dekripsi gratis\" dari situs atau grup yang tidak dikenal; banyak yang justru berisi malware baru. Pulihkan dari backup, atau pakai alat yang direkomendasikan pihak IT dan sumber resmi.",
+      "en": "Do not download \"free decryption tools\" from unknown sites or groups; many carry new malware. Restore from backup, or use tools recommended by your IT provider and official sources."
+    }
+  },
+  {
+    "id": "account-audit",
+    "name": { "id": "Rapikan akun dan hak akses", "en": "Account and access review" },
+    "description": {
+      "id": "Hapus akun yang tidak dipakai, pastikan tiap orang punya akun sendiri, dan batasi siapa yang punya hak admin. Akun admin bersama dengan password yang sama di mana-mana adalah pintu yang paling sering dipakai penyerang.",
+      "en": "Remove unused accounts, give each person their own account, and limit who has admin rights. A shared admin account with the same password everywhere is the door attackers use most."
+    }
+  }
+]
