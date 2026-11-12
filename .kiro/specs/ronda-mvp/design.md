@@ -195,7 +195,8 @@ Two families of test data:
 - Node count: `fc.integer({ min: 2, max: 20 })`.
 - Random DAG structure: assign each non-ending node a subset of successors from already-created nodes plus exactly one ending node. This guarantees acyclicity.
 - Room values: uniform choice over the four rooms.
-- Bilingual text: `fc.string({ minLength: 1 })` × 2.
+- Bilingual text: non-blank strings × 2 (`fc.string({ minLength: 1 })` filtered by `s.trim() !== ""`). Plain `fc.string({ minLength: 1 })` produces whitespace-only text, which REQ-2.6 rejects; see `docs/pbt-findings.md` #1.
+- Graph shape: endings are created first, the start node last; every non-ending node links to the previously created node and the first non-ending node links to every ending, so every node is reachable (REQ-5.3) by construction.
 - Choice quality: weighted toward mixed (not all bad, not all good) to exercise interesting paths.
 - Controls: chosen from the catalog; bad choices get ≥1.
 
@@ -209,6 +210,7 @@ Two families of test data:
 | REQ-5.4 Bad → controls | Filter choices with `quality === "bad"`; assert each has `controls.length >= 1` and each control ID ∈ catalog keys. |
 | REQ-5.5 Bilingual | Walk every BilingualText field recursively; assert `id.trim() !== ""` and `en.trim() !== ""`. |
 | REQ-5.6 Monotonicity | For the real scenario: pick a bad choice on some node, replace it with a good equivalent, replay the same path, compare scores. For generated: compare two sessions differing by exactly one good vs bad choice. |
+| Score accounting (extra) | Final score equals the sum of the chosen choices' `score` deltas. Added because REQ-5.6 alone misses a session that ignores bad-choice penalties; see `docs/pbt-findings.md` #2. |
 | REQ-5.7 Report = history | Run a session to completion following a fixed (or generated) path; compute expected missed controls independently; assert deep equality with `report.missedControls`. |
 
 ---

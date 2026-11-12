@@ -38,7 +38,7 @@ Tasks are ordered by dependency. Each task is independently executable. The chec
 
 ## Phase 2 — Engine Core
 
-- [ ] **TASK-4** Define shared TypeScript types
+- [x] **TASK-4** Define shared TypeScript types
 
   Create `packages/engine/src/types.ts` exporting all shared types listed in the design:
   `BilingualText`, `Room`, `ChoiceQuality`, `EndingType`, `Choice`, `NonEndingNode`, `EndingNode`, `ScenarioNode`, `Scenario`, `Control`, `ControlCatalog`, `HistoryEntry`, `ChoiceResult`, `Session`, `Report`, `ChecklistItem`, `ScenarioError`, `SessionError`.
@@ -48,7 +48,7 @@ Tasks are ordered by dependency. Each task is independently executable. The chec
 
   Acceptance: `npx tsc --noEmit` passes; no `any` types.
 
-- [ ] **TASK-5** Implement schema validation (`schema.ts`)
+- [x] **TASK-5** Implement schema validation (`schema.ts`)
 
   Implement `packages/engine/src/schema.ts`:
   - Define Zod schemas for all types from TASK-4.
@@ -60,7 +60,7 @@ Tasks are ordered by dependency. Each task is independently executable. The chec
 
   Acceptance: unit tests cover valid input, structurally invalid input (missing required field), and referentially invalid input (unknown control ID, unknown next node). All tests pass.
 
-- [ ] **TASK-6** Implement Session (`session.ts`)
+- [x] **TASK-6** Implement Session (`session.ts`)
 
   Implement `packages/engine/src/session.ts`:
   - Export `createSession(scenario: Scenario): Session` returning a closure-based session object.
@@ -69,7 +69,7 @@ Tasks are ordered by dependency. Each task is independently executable. The chec
 
   Acceptance: unit tests cover: initial state, single good choice, single bad choice, reaching an ending, calling `choose()` on ended session (should throw), calling `choose()` with invalid ID (should throw), `getHistory()` ordering.
 
-- [ ] **TASK-7** Implement Report generation (`report.ts`)
+- [x] **TASK-7** Implement Report generation (`report.ts`)
 
   Implement `packages/engine/src/report.ts`:
   - Export `generateReport(session: Session, catalog: ControlCatalog): Report`.
@@ -78,7 +78,7 @@ Tasks are ordered by dependency. Each task is independently executable. The chec
 
   Acceptance: unit tests cover: no bad choices (empty missed controls), one bad choice, multiple bad choices with overlapping controls (de-duplication), calling on unfinished session (should throw).
 
-- [ ] **TASK-8** Wire public API (`index.ts`)
+- [x] **TASK-8** Wire public API (`index.ts`)
 
   Fill `packages/engine/src/index.ts` with re-exports of `loadScenario`, `createSession`, `generateReport`, and all public types from `types.ts`.
 
@@ -88,7 +88,7 @@ Tasks are ordered by dependency. Each task is independently executable. The chec
 
 ## Phase 3 — Property-Based Tests
 
-- [ ] **TASK-9** Build the scenario arbitrary generator
+- [x] **TASK-9** Build the scenario arbitrary generator
 
   In `packages/engine/test/arbitraries.ts`:
   - Implement `bilingualArbitrary()`: `fc.record({ id: fc.string({minLength:1}), en: fc.string({minLength:1}) })`.
@@ -100,7 +100,7 @@ Tasks are ordered by dependency. Each task is independently executable. The chec
 
   Acceptance: `fc.sample(scenarioArbitrary(catalog), 20)` produces valid scenarios (verified by running `loadScenario` on each).
 
-- [ ] **TASK-10** Implement the seven PBT properties
+- [x] **TASK-10** Implement the seven PBT properties
 
   In `packages/engine/test/properties.test.ts`:
   - Load `ransomware-toko.json` and `controls.json` from disk for the real-scenario baseline (skipped with a clear message if files don't exist yet, to allow running the test file before TASK-13/TASK-14).
