@@ -1,8 +1,9 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  // GitHub Pages serves the site from https://<user>.github.io/ronda/
-  base: '/ronda/',
+  // Relative asset URLs, so the build works under any GitHub Pages path
+  // (https://<user>.github.io/<repo>/) without knowing the repository name.
+  base: './',
   build: {
     outDir: 'dist',
   },

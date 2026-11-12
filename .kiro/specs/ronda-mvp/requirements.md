@@ -212,6 +212,6 @@ All seven properties must pass both on the real `ransomware-toko.json` scenario 
 
 ### 9 — Kiro Hook
 
-**REQ-9.1** A Kiro hook must be configured at `.kiro/hooks/validate-scenario.json` that fires when any file matching `scenarios/**/*.json` is saved.
+**REQ-9.1** A Kiro hook must be configured at `.kiro/hooks/validate-scenario.kiro.hook` that fires when any file matching `scenarios/**/*.json` is saved.
 
 **REQ-9.2** The hook must run the schema validator and the PBT suite against the saved file and report errors to the terminal.

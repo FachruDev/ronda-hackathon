@@ -255,9 +255,9 @@ Tasks are ordered by dependency. Each task is independently executable. The chec
 
   Acceptance: Pushing to `main` triggers the workflow; the app is live at `https://<user>.github.io/ronda/`.
 
-- [ ] **TASK-22** Kiro hook for scenario validation
+- [x] **TASK-22** Kiro hook for scenario validation
 
-  Create `.kiro/hooks/validate-scenario.json` as described in the design.
+  Create `.kiro/hooks/validate-scenario.kiro.hook` as described in the design.
   Add a `validate-scenario` npm script to `packages/engine/package.json`:
   ```
   "validate-scenario": "node scripts/validate.mjs"
@@ -270,7 +270,7 @@ Tasks are ordered by dependency. Each task is independently executable. The chec
 
   Acceptance: Saving a valid scenario JSON in Kiro prints "✓ Scenario valid" in the terminal panel; saving a broken scenario prints the field-level errors.
 
-- [ ] **TASK-23** Write README
+- [x] **TASK-23** Write README
 
   Update `README.md`:
   - Project description (one paragraph).
@@ -282,7 +282,7 @@ Tasks are ordered by dependency. Each task is independently executable. The chec
 
   Acceptance: A developer can follow the README to get the app running locally without prior knowledge of the repo.
 
-- [ ] **TASK-24** Final integration check
+- [x] **TASK-24** Final integration check
 
   Run the full verification suite:
   1. `npm ci` from root — clean install.

@@ -1,0 +1,14 @@
+{
+  "enabled": true,
+  "name": "Validate scenario on save",
+  "description": "When a scenario or the control catalog in scenarios/ is saved, validate it and run the property-based tests, then report any field-level errors.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": ["scenarios/**/*.json"]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A file in scenarios/ was just saved. From the repository root:\n1. Run `npm run validate-scenario --silent -- <saved file path>`. For scenarios/controls.json, run `npm run validate-scenario --silent` with no argument so every scenario is re-checked against the catalog.\n2. If validation passes, run `npm test` (unit tests, the seven property-based tests on the real scenario, and the REQ-6 content tests).\n3. Report the result briefly. On failure, list each error with its JSON path and explain in one sentence how to fix it. Do not edit the scenario file yourself unless asked."
+  }
+}

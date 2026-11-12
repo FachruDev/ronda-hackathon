@@ -43,7 +43,7 @@ ronda/
     ├── steering/
     ├── specs/
     └── hooks/
-        └── validate-scenario.json
+        └── validate-scenario.kiro.hook
 ```
 
 ---
@@ -320,12 +320,12 @@ Single `style.css` with:
 ```typescript
 // vite.config.ts
 export default defineConfig({
-  base: '/ronda/',   // GitHub Pages repo path
+  base: './',   // relative URLs: works under any GitHub Pages path
   build: { outDir: 'dist' },
 })
 ```
 
-GitHub Actions workflow (`.github/workflows/deploy.yml`) builds and pushes `dist/` to `gh-pages` branch using `actions/deploy-pages`.
+GitHub Actions workflow (`.github/workflows/deploy.yml`) runs typecheck, tests and build, then publishes `apps/ransomware-house/dist` with `actions/upload-pages-artifact` + `actions/deploy-pages` (Pages source: "GitHub Actions", no `gh-pages` branch).
 
 ---
 
@@ -366,24 +366,12 @@ User action (click choice)
 
 ## Kiro Hook Design
 
-File: `.kiro/hooks/validate-scenario.json`
+File: `.kiro/hooks/validate-scenario.kiro.hook` (Kiro's agent-hook format)
 
-```json
-{
-  "version": "v1",
-  "hooks": [{
-    "name": "Validate scenario on save",
-    "trigger": "PostFileSave",
-    "matcher": "scenarios/.*\\.json$",
-    "action": {
-      "type": "command",
-      "command": "npm run validate-scenario --workspace=packages/engine"
-    }
-  }]
-}
-```
+- `when`: `fileEdited` on `scenarios/**/*.json`.
+- `then`: `askAgent` with a prompt to run `npm run validate-scenario --silent -- <file>`, then `npm test` if validation passes, and report field-level errors with a one-line fix each.
 
-The `validate-scenario` script in `packages/engine/package.json` runs a small Node script that calls `loadScenario()` on the saved file and exits with code 1 on error (printing the structured error messages). It also runs the PBT suite via `vitest --run`.
+The `validate-scenario` script (`packages/engine/scripts/validate.ts`, run with `tsx`) loads the control catalog, calls `loadScenario()` on the given file (argument, `KIRO_FILE_PATH`, or every file in `scenarios/`), then checks the graph rules a schema cannot express: every node reachable from `start` and no reachable cycle. It prints `✓ <file>: scenario valid` or one `path: message` line per error and exits 1 on failure.
 
 ---
 
@@ -396,4 +384,4 @@ The `validate-scenario` script in `packages/engine/package.json` runs a small No
 | DAG generator for PBTs | Guarantees the generated arbitrary itself is always structurally valid, so test failures are always engine bugs, not generator bugs. |
 | Functional session (closure) | Avoids exposing mutable internal state via class properties; `Session` is an interface, not a class — easier to test and mock. |
 | CSS custom properties for theming | Single source of truth for colours; trivial to override in a future light theme or second app. |
-| `base: '/ronda/'` in Vite | Required for GitHub Pages sub-path deployment without a custom domain. |
+| `base: './'` in Vite | GitHub Pages serves the app under the repository name (`/ronda-hackathon/`); relative asset URLs work there and anywhere else without hard-coding it. |
